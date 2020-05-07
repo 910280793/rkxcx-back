@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xcx.com.dao.UserinfoMapper">
+  <resultMap id="BaseResultMap" type="xcx.com.domain.Userinfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="test_id" jdbcType="INTEGER" property="testId" />
+    <result column="test_name" jdbcType="VARCHAR" property="testName" />
+    <result column="dt_count" jdbcType="INTEGER" property="dtCount" />
+    <result column="sc_count" jdbcType="INTEGER" property="scCount" />
+    <result column="ct_count" jdbcType="INTEGER" property="ctCount" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, test_id, test_name, dt_count, sc_count, ct_count
+  </sql>
+  <select id="selectByExample" parameterType="xcx.com.example.UserinfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from userinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from userinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from userinfo
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from userinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="xcx.com.example.UserinfoExample">
+    delete from userinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xcx.com.domain.Userinfo" useGeneratedKeys="true">
+    insert into userinfo (user_id, test_id, test_name, 
+      dt_count, sc_count, ct_count
+      )
+    values (#{userId,jdbcType=INTEGER}, #{testId,jdbcType=INTEGER}, #{testName,jdbcType=VARCHAR}, 
+      #{dtCount,jdbcType=INTEGER}, #{scCount,jdbcType=INTEGER}, #{ctCount,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="xcx.com.domain.Userinfo" useGeneratedKeys="true">
+    insert into userinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="testId != null">
+        test_id,
+      </if>
+      <if test="testName != null">
+        test_name,
+      </if>
+      <if test="dtCount != null">
+        dt_count,
+      </if>
+      <if test="scCount != null">
+        sc_count,
+      </if>
+      <if test="ctCount != null">
+        ct_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="testId != null">
+        #{testId,jdbcType=INTEGER},
+      </if>
+      <if test="testName != null">
+        #{testName,jdbcType=VARCHAR},
+      </if>
+      <if test="dtCount != null">
+        #{dtCount,jdbcType=INTEGER},
+      </if>
+      <if test="scCount != null">
+        #{scCount,jdbcType=INTEGER},
+      </if>
+      <if test="ctCount != null">
+        #{ctCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="xcx.com.example.UserinfoExample" resultType="java.lang.Long">
+    select count(*) from userinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update userinfo
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.testId != null">
+        test_id = #{record.testId,jdbcType=INTEGER},
+      </if>
+      <if test="record.testName != null">
+        test_name = #{record.testName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dtCount != null">
+        dt_count = #{record.dtCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.scCount != null">
+        sc_count = #{record.scCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.ctCount != null">
+        ct_count = #{record.ctCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update userinfo
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      test_id = #{record.testId,jdbcType=INTEGER},
+      test_name = #{record.testName,jdbcType=VARCHAR},
+      dt_count = #{record.dtCount,jdbcType=INTEGER},
+      sc_count = #{record.scCount,jdbcType=INTEGER},
+      ct_count = #{record.ctCount,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="xcx.com.domain.Userinfo">
+    update userinfo
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="testId != null">
+        test_id = #{testId,jdbcType=INTEGER},
+      </if>
+      <if test="testName != null">
+        test_name = #{testName,jdbcType=VARCHAR},
+      </if>
+      <if test="dtCount != null">
+        dt_count = #{dtCount,jdbcType=INTEGER},
+      </if>
+      <if test="scCount != null">
+        sc_count = #{scCount,jdbcType=INTEGER},
+      </if>
+      <if test="ctCount != null">
+        ct_count = #{ctCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xcx.com.domain.Userinfo">
+    update userinfo
+    set user_id = #{userId,jdbcType=INTEGER},
+      test_id = #{testId,jdbcType=INTEGER},
+      test_name = #{testName,jdbcType=VARCHAR},
+      dt_count = #{dtCount,jdbcType=INTEGER},
+      sc_count = #{scCount,jdbcType=INTEGER},
+      ct_count = #{ctCount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

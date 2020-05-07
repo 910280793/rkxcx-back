@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xcx.com.dao.QuestionMapper">
+  <resultMap id="BaseResultMap" type="xcx.com.domain.Question">
+    <id column="qid" jdbcType="INTEGER" property="qid" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="year" jdbcType="VARCHAR" property="year" />
+    <result column="month" jdbcType="VARCHAR" property="month" />
+    <result column="xh" jdbcType="INTEGER" property="xh" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="answer" jdbcType="VARCHAR" property="answer" />
+    <result column="analysis" jdbcType="VARCHAR" property="analysis" />
+    <result column="analysisImage" jdbcType="VARCHAR" property="analysisimage" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="qtype" jdbcType="VARCHAR" property="qtype" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="test_id" jdbcType="INTEGER" property="testId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    qid, `type`, `year`, `month`, xh, image, content, answer, analysis, analysisImage, 
+    `describe`, qtype, category, test_id
+  </sql>
+  <select id="selectByExample" parameterType="xcx.com.example.QuestionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from question
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from question
+    where qid = #{qid,jdbcType=INTEGER}
+  </select>
+  <select id="pkQue" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from question
+    where type = #{type}
+    LIMIT  #{start},5
+  </select>
+  <select id="MyselectByTestIdXh" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from question
+    where xh = #{xh,jdbcType=INTEGER} and test_id=#{testId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from question
+    where qid = #{qid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="xcx.com.example.QuestionExample">
+    delete from question
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="qid" keyProperty="qid" parameterType="xcx.com.domain.Question" useGeneratedKeys="true">
+    insert into question (`type`, `year`, `month`, 
+      xh, image, content, 
+      answer, analysis, analysisImage, 
+      `describe`, qtype, category, 
+      test_id)
+    values (#{type,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, #{month,jdbcType=VARCHAR}, 
+      #{xh,jdbcType=INTEGER}, #{image,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{answer,jdbcType=VARCHAR}, #{analysis,jdbcType=VARCHAR}, #{analysisimage,jdbcType=VARCHAR}, 
+      #{describe,jdbcType=VARCHAR}, #{qtype,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
+      #{testId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="qid" keyProperty="qid" parameterType="xcx.com.domain.Question" useGeneratedKeys="true">
+    insert into question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="year != null">
+        `year`,
+      </if>
+      <if test="month != null">
+        `month`,
+      </if>
+      <if test="xh != null">
+        xh,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="answer != null">
+        answer,
+      </if>
+      <if test="analysis != null">
+        analysis,
+      </if>
+      <if test="analysisimage != null">
+        analysisImage,
+      </if>
+      <if test="describe != null">
+        `describe`,
+      </if>
+      <if test="qtype != null">
+        qtype,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="testId != null">
+        test_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="xh != null">
+        #{xh,jdbcType=INTEGER},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="analysis != null">
+        #{analysis,jdbcType=VARCHAR},
+      </if>
+      <if test="analysisimage != null">
+        #{analysisimage,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="qtype != null">
+        #{qtype,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="testId != null">
+        #{testId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="xcx.com.example.QuestionExample" resultType="java.lang.Long">
+    select count(*) from question
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update question
+    <set>
+      <if test="record.qid != null">
+        qid = #{record.qid,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.year != null">
+        `year` = #{record.year,jdbcType=VARCHAR},
+      </if>
+      <if test="record.month != null">
+        `month` = #{record.month,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xh != null">
+        xh = #{record.xh,jdbcType=INTEGER},
+      </if>
+      <if test="record.image != null">
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.answer != null">
+        answer = #{record.answer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.analysis != null">
+        analysis = #{record.analysis,jdbcType=VARCHAR},
+      </if>
+      <if test="record.analysisimage != null">
+        analysisImage = #{record.analysisimage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.describe != null">
+        `describe` = #{record.describe,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qtype != null">
+        qtype = #{record.qtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.category != null">
+        category = #{record.category,jdbcType=VARCHAR},
+      </if>
+      <if test="record.testId != null">
+        test_id = #{record.testId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update question
+    set qid = #{record.qid,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=VARCHAR},
+      `year` = #{record.year,jdbcType=VARCHAR},
+      `month` = #{record.month,jdbcType=VARCHAR},
+      xh = #{record.xh,jdbcType=INTEGER},
+      image = #{record.image,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      answer = #{record.answer,jdbcType=VARCHAR},
+      analysis = #{record.analysis,jdbcType=VARCHAR},
+      analysisImage = #{record.analysisimage,jdbcType=VARCHAR},
+      `describe` = #{record.describe,jdbcType=VARCHAR},
+      qtype = #{record.qtype,jdbcType=VARCHAR},
+      category = #{record.category,jdbcType=VARCHAR},
+      test_id = #{record.testId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="xcx.com.domain.Question">
+    update question
+    <set>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null">
+        `year` = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null">
+        `month` = #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="xh != null">
+        xh = #{xh,jdbcType=INTEGER},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="analysis != null">
+        analysis = #{analysis,jdbcType=VARCHAR},
+      </if>
+      <if test="analysisimage != null">
+        analysisImage = #{analysisimage,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        `describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="qtype != null">
+        qtype = #{qtype,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="testId != null">
+        test_id = #{testId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where qid = #{qid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xcx.com.domain.Question">
+    update question
+    set `type` = #{type,jdbcType=VARCHAR},
+      `year` = #{year,jdbcType=VARCHAR},
+      `month` = #{month,jdbcType=VARCHAR},
+      xh = #{xh,jdbcType=INTEGER},
+      image = #{image,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      answer = #{answer,jdbcType=VARCHAR},
+      analysis = #{analysis,jdbcType=VARCHAR},
+      analysisImage = #{analysisimage,jdbcType=VARCHAR},
+      `describe` = #{describe,jdbcType=VARCHAR},
+      qtype = #{qtype,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      test_id = #{testId,jdbcType=INTEGER}
+    where qid = #{qid,jdbcType=INTEGER}
+  </update>
+</mapper>
